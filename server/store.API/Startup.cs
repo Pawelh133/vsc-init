@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace store.API
 {
@@ -27,6 +28,11 @@ namespace store.API
         {
             services.AddMvc();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Bellwether api", Version = "v1" });
+            });
+
             var containerBuilder = AutofacConfig.Register(new ContainerBuilder());
             containerBuilder.Populate(services);
 			var container = containerBuilder.Build();
@@ -41,6 +47,12 @@ namespace store.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bellwether api v1");
+            });
 
             app.UseMvc();
         }
