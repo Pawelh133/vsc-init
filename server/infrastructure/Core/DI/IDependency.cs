@@ -1,1 +1,4 @@
-public interface IDependency {}
+namespace Core.DI
+{
+  public interface IDependency { }
+}

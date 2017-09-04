@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Swashbuckle.AspNetCore.Swagger;
+using store.API.App_Start.autofac.config;
 
 namespace store.API
 {
@@ -27,7 +28,7 @@ namespace store.API
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
+            var configuration = Configuration;
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Bellwether api", Version = "v1" });

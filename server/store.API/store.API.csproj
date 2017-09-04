@@ -17,7 +17,8 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\boundedContext\Store.Items\Store.Items.csproj" />
     <ProjectReference Include="..\infrastructure\Core\Core.csproj" />
+    <ProjectReference Include="..\boundedContext\Items\Items.Services\Items.Services.csproj" />
+    <ProjectReference Include="..\boundedContext\Items\Items.Domain\Items.Domain.csproj" />
   </ItemGroup>
 </Project>

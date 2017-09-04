@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 
-namespace OpenCrm.Framework.Dependency
+namespace Core.DI
 {
     public static class AutofacBuilderProvider
     {
