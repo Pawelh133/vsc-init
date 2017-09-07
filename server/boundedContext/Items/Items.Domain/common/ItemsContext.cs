@@ -1,15 +1,13 @@
+using Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace Items.Domain.common
 {
   public class ItemsContext : DbContext
   {
-    public DbSet<Item> Items { get; set; }
+    public ItemsContext(DbContextOptions<ItemsContext> options) : base(options)
+    { }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-      // optionsBuilder.UseSqlServer();
-      base.OnConfiguring(optionsBuilder);
-    }
+    public DbSet<Item> Items { get; set; }
   }
 }

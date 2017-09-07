@@ -12,50 +12,62 @@ using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Swashbuckle.AspNetCore.Swagger;
 using store.API.App_Start.autofac.config;
+using Core;
+using Microsoft.EntityFrameworkCore;
+using Items.Domain.common;
 
 namespace store.API
 {
-    public class Startup
+  public class Startup
+  {
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvc();
-            var configuration = Configuration;
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "Bellwether api", Version = "v1" });
-            });
-
-            var containerBuilder = AutofacConfig.Register(new ContainerBuilder());
-            containerBuilder.Populate(services);
-			var container = containerBuilder.Build();
-
-            return container.Resolve<IServiceProvider>();
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bellwether api v1");
-            });
-
-            app.UseMvc();
-        }
+      Configuration = configuration;
     }
+
+    public IConfiguration Configuration { get; }
+
+    // This method gets called by the runtime. Use this method to add services to the container.
+    public IServiceProvider ConfigureServices(IServiceCollection services)
+    {
+      services.AddMvc();
+
+      services.AddSwaggerGen(c =>
+      {
+        c.SwaggerDoc("v1", new Info { Title = "Bellwether api", Version = "v1" });
+      });
+
+      var containerBuilder = AutofacConfig.Register(new ContainerBuilder());
+      containerBuilder.Register(ctx =>
+          new DatabaseProvider
+          {
+            ConnectionString = Configuration.GetConnectionString("DefaultConnection")
+          }).As<IDatabaseProvider>();
+
+      services.AddDbContext<ItemsContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+      m => m.MigrationsAssembly("store.API")));
+
+      containerBuilder.Populate(services);
+      var container = containerBuilder.Build();
+
+      return container.Resolve<IServiceProvider>();
+    }
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    {
+      if (env.IsDevelopment())
+      {
+        app.UseDeveloperExceptionPage();
+      }
+
+      app.UseSwagger();
+      app.UseSwaggerUI(c =>
+      {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bellwether api v1");
+      });
+
+      app.UseMvc();
+    }
+  }
 }
