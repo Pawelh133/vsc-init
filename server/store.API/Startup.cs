@@ -44,7 +44,7 @@ namespace store.API
             ConnectionString = Configuration.GetConnectionString("DefaultConnection")
           }).As<IDatabaseProvider>();
 
-      services.AddDbContext<ItemsContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+      services.AddDbContext<ItemsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
       m => m.MigrationsAssembly("store.API")));
 
       containerBuilder.Populate(services);
