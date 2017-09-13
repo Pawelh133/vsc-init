@@ -26,7 +26,7 @@ namespace store.API.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return "value2";
         }
 
         [HttpPost]
