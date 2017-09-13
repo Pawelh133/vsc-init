@@ -1,1 +1,4 @@
-public interface ISingletonDependency {}
+namespace Core.DI
+{
+  public interface ISingletonDependency { }
+}

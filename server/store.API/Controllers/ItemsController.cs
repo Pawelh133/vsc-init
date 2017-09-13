@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Items.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace store.API.Controllers
@@ -25,7 +26,7 @@ namespace store.API.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return "value2";
         }
 
         [HttpPost]
